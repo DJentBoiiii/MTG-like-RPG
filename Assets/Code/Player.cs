@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 
-class Player
+class Player : MonoBehaviour
 {
       List<Card> inventory;
       int balance;
 
-      public Player()
+      void Start()
       {
             inventory = new List<Card>();
-            balance = 0;
+            balance = 1000;
       }
 }

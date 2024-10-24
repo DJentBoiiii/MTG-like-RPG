@@ -19,10 +19,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        playerDeck.Add(new Card("Knight", 10, 3));
-        playerDeck.Add(new Card("Dragon", 12, 5));
-        enemyDeck.Add(new Card("Goblin", 8, 2));
-        enemyDeck.Add(new Card("Orc", 14, 4));
+        playerDeck.Add(new Card("Knight", 10, 3, 5, "VadymGay"));
+        playerDeck.Add(new Card("Dragon", 12, 5, 5, "VadymGay"));
+        enemyDeck.Add(new Card("Goblin", 8, 2, 5, "VadymGay"));
+        enemyDeck.Add(new Card("Orc", 14, 4, 5, "VadymGay"));
 
         selectedPlayerCard = GetRandomCard(playerDeck);
         enemyCard = GetRandomCard(enemyDeck);
@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
 
     void UpdateUI()
     {
-        playerHealthText.text = "Health: " + selectedPlayerCard.health;
-        enemyHealthText.text = "Health: " + enemyCard.health;
+        playerHealthText.text = "Health: " + selectedPlayerCard.HP;
+        enemyHealthText.text = "Health: " + enemyCard.HP;
     }
 
 
@@ -51,8 +51,8 @@ public class GameManager : MonoBehaviour
         enemyCard = GetRandomCard(enemyDeck);
 
 
-        selectedPlayerCard.TakeDamage(enemyCard.damage);
-        enemyCard.TakeDamage(selectedPlayerCard.damage);
+        selectedPlayerCard.TakeDamage(enemyCard.Power);
+        enemyCard.TakeDamage(selectedPlayerCard.Power);
 
 
         UpdateUI();
@@ -60,11 +60,11 @@ public class GameManager : MonoBehaviour
 
         if (selectedPlayerCard.IsDead())
         {
-            Debug.Log(selectedPlayerCard.cardName + " is dead!");
+            Debug.Log(selectedPlayerCard.CardName + " is dead!");
         }
         if (enemyCard.IsDead())
         {
-            Debug.Log(enemyCard.cardName + " is dead!");
+            Debug.Log(enemyCard.CardName + " is dead!");
         }
 
 

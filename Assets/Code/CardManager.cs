@@ -2,6 +2,7 @@ using UnityEngine;
 using Mono.Data.Sqlite;
 using System.Data;
 using System;
+using System.Collections.Generic;
 
 public class CardManager : MonoBehaviour
 {
@@ -56,9 +57,9 @@ public class CardManager : MonoBehaviour
                   connection.Open();
                   using (var command = connection.CreateCommand())
                   {
-                        command.CommandText = "INSERT INTO Player_Inventory (player_id, cards_id, item_name, quantity) VALUES (@player_id, @cards_id, @item_name, @quantity)";
+                        command.CommandText = "INSERT INTO Player_Inventory (player_id, card_id, item_name, quantity) VALUES (@player_id, @card_id, @item_name, @quantity)";
                         command.Parameters.AddWithValue("@player_id", playerId);
-                        command.Parameters.AddWithValue("@cards_id", cardId);
+                        command.Parameters.AddWithValue("@card_id", cardId);
                         command.Parameters.AddWithValue("@item_name", itemName);
                         command.Parameters.AddWithValue("@quantity", quantity);
                         command.ExecuteNonQuery();
@@ -74,9 +75,9 @@ public class CardManager : MonoBehaviour
                   connection.Open();
                   using (var command = connection.CreateCommand())
                   {
-                        command.CommandText = "DELETE FROM Player_Inventory WHERE player_id = @player_id AND cards_id = @cards_id";
+                        command.CommandText = "DELETE FROM Player_Inventory WHERE player_id = @player_id AND card_id = @card_id";
                         command.Parameters.AddWithValue("@player_id", playerId);
-                        command.Parameters.AddWithValue("@cards_id", cardId);
+                        command.Parameters.AddWithValue("@card_id", cardId);
                         command.ExecuteNonQuery();
                   }
                   connection.Close();
@@ -144,7 +145,7 @@ public class CardManager : MonoBehaviour
                   using (var command = connection.CreateCommand())
                   {
                         command.CommandText = @"
-            INSERT INTO Player_Inventory (cards_id)
+            INSERT INTO Player_Inventory (card_id)
             SELECT card_id FROM Shop_Inventory WHERE card_id = @card_id;
             DELETE FROM Shop_Inventory WHERE card_id = @card_id";
                         command.Parameters.AddWithValue("@card_id", cardId);
@@ -167,7 +168,7 @@ public class CardManager : MonoBehaviour
                         {
                               while (reader.Read())
                               {
-                                    Debug.Log($"ID: {reader["id"]}, Name: {reader["card_name"]}, HP: {reader["hp"]}, Power: {reader["power"]}, Mana Price: {reader["mana_price"]}, Description: {reader["description"]}, Image URL: {reader["image_url"]}");
+                                    Debug.Log($"ID: {reader["id"]}, Name: {reader["card_name"]}, HP: {reader["hp"]}, Power: {reader["power"]}, Mana Price: {reader["mana_price"]}, Image URL: {reader["image_url"]}");
                               }
                         }
                   }
@@ -175,4 +176,64 @@ public class CardManager : MonoBehaviour
             }
       }
 
+      public void PrintAllPlayerCards(int playerId)
+      {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                  connection.Open();
+                  using (var command = connection.CreateCommand())
+                  {
+                        command.CommandText = @"
+                SELECT Cards.id, Cards.card_name, Cards.hp, Cards.power, Cards.mana_price, Cards.image_url, Player_Inventory.quantity 
+                FROM Player_Inventory 
+                JOIN Cards ON Player_Inventory.card_id = Cards.id";
+                        using (var reader = command.ExecuteReader())
+                        {
+                              while (reader.Read())
+                              {
+                                    Debug.Log($"ID: {reader["id"]}, Name: {reader["card_name"]}, HP: {reader["hp"]}, Power: {reader["power"]}, Mana Price: {reader["mana_price"]}, Quantity: {reader["quantity"]}, Image URL: {reader["image_url"]}");
+                              }
+                        }
+                  }
+                  connection.Close();
+            }
+      }
+
+      public List<Card> GetAllPlayerCards(int playerId)
+      {
+            List<Card> playerCards = new List<Card>();
+
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                  connection.Open();
+                  using (var command = connection.CreateCommand())
+                  {
+                        command.CommandText = @"
+                SELECT Cards.id, Cards.card_name, Cards.hp, Cards.power, Cards.mana_price, Cards.image_url, Player_Inventory.quantity 
+                FROM Player_Inventory 
+                JOIN Cards ON Player_Inventory.card_id = Cards.id;";
+                        using (var reader = command.ExecuteReader())
+                        {
+                              while (reader.Read())
+                              {
+                                    var card = new Card(
+                                        reader["card_name"].ToString(),
+                                        Convert.ToInt32(reader["hp"]),
+                                        Convert.ToInt32(reader["power"]),
+                                        Convert.ToInt32(reader["mana_price"]),
+                                        reader["image_url"].ToString()
+                                    );
+                                    playerCards.Add(card);
+                              }
+
+
+                        }
+                        connection.Close();
+                  }
+
+                  return playerCards;
+            }
+
+
+      }
 }

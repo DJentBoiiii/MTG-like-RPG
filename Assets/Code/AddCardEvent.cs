@@ -12,8 +12,8 @@ public class AddCardEvent : MonoBehaviour
         using var connection = new SqliteConnection(connectionString);
         connection.Open();
         CardManager m = gameObject.AddComponent(typeof(CardManager)) as CardManager;
-        m.TransferCardFromShopToPlayer(1);
-        Debug.Log("Added card");
+        m.PrintAllPlayerCards(1);
+        Debug.Log("Here you go, Nigger");
         connection.Close();
     }
 }
