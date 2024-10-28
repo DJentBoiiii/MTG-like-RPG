@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour
 {
-    public void Transition(){
-    Debug.Log("Button Clicked!");
-    SceneManager.LoadScene(2);
-}
+    public void Transition()
+    {
+        Debug.Log("Button Clicked!");
+        SceneManager.LoadScene(2);
+    }
 }

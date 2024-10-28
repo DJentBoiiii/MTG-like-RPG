@@ -1,23 +1,32 @@
+using UnityEngine.Timeline;
+
 public class Card
 {
-    public string cardName;
-    public int health;
-    public int damage;
+    public string CardName { get; set; }
+    public int HP { get; set; }
+    public int Power { get; set; }
+    public int ManaPrice { get; set; }
+    public string ImageUrl { get; set; }
+    public int Quantity { get; set; }
 
-    public Card(string name, int hp, int dmg)
+    public Card(string name, int hp, int dmg, int prc, string url)
     {
-        cardName = name;
-        health = hp;
-        damage = dmg;
+        CardName = name;
+        HP = hp;
+        Power = dmg;
+        ManaPrice = prc;
+        ImageUrl = url;
+        
+
     }
 
     public void TakeDamage(int dmg)
     {
-        health -= dmg;
+        HP -= dmg;
     }
 
     public bool IsDead()
     {
-        return health <= 0;
+        return HP <= 0;
     }
 }
