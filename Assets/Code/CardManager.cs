@@ -50,17 +50,15 @@ public class CardManager : MonoBehaviour
             }
       }
 
-      public void AddCardToPlayerInventory(int playerId, int cardId, string itemName, int quantity)
+      public void AddCardToPlayerInventory(int cardId, int quantity)
       {
             using (var connection = new SqliteConnection(connectionString))
             {
                   connection.Open();
                   using (var command = connection.CreateCommand())
                   {
-                        command.CommandText = "INSERT INTO Player_Inventory (player_id, card_id, item_name, quantity) VALUES (@player_id, @card_id, @item_name, @quantity)";
-                        command.Parameters.AddWithValue("@player_id", playerId);
+                        command.CommandText = "INSERT INTO Player_Inventory (card_id, quantity) VALUES (@card_id, @quantity)";
                         command.Parameters.AddWithValue("@card_id", cardId);
-                        command.Parameters.AddWithValue("@item_name", itemName);
                         command.Parameters.AddWithValue("@quantity", quantity);
                         command.ExecuteNonQuery();
                   }
@@ -199,7 +197,7 @@ public class CardManager : MonoBehaviour
             }
       }
 
-      public List<Card> GetAllPlayerCards(int playerId)
+      public List<Card> GetAllPlayerCards()
       {
             List<Card> playerCards = new List<Card>();
 
@@ -225,7 +223,6 @@ public class CardManager : MonoBehaviour
                                     );
                                     playerCards.Add(card);
                               }
-
 
                         }
                         connection.Close();

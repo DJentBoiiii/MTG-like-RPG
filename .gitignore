@@ -51,6 +51,7 @@ ExportedObj/
 *.opendb
 *.VC.db
 *.db
+*.vsconfig
 
 
 
