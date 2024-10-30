@@ -52,6 +52,7 @@ ExportedObj/
 *.VC.db
 *.db
 *.vsconfig
+.vsconfig
 
 
 
