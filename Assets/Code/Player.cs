@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-class Player : MonoBehaviour
+public class Player : MonoBehaviour
 {
       List<Card> inventory;
       int balance;
@@ -11,5 +11,14 @@ class Player : MonoBehaviour
       {
             inventory = new List<Card>();
             balance = 1000;
+      }
+
+      public int GetBalance()
+      {
+            return balance;
+      }
+      public int SetBalance(int b)
+      {
+            return balance = b;
       }
 }
