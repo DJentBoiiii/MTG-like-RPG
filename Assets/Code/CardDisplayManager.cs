@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Mono.Data.Sqlite;
+using System.IO;
 using System;
 
 public class CardDisplayManager : MonoBehaviour
@@ -24,9 +25,9 @@ public class CardDisplayManager : MonoBehaviour
     void DisplayCards()
     {
         ClearExistingButtons();
-        var connectionString = "URI=file:" + Application.dataPath + "/Cards.db";
-        Debug.Log("Trying to connect");
-        using var connection = new SqliteConnection(connectionString);
+        string dbPath = Path.Combine(Application.streamingAssetsPath, "Cards.db");
+        Debug.Log("Trying to connect to database at " + dbPath);
+        using var connection = new SqliteConnection("URI=file:" + dbPath);
         connection.Open();
         CardManager m = gameObject.AddComponent(typeof(CardManager)) as CardManager;
         cards = m.GetAllPlayerCards();
@@ -37,7 +38,6 @@ public class CardDisplayManager : MonoBehaviour
             GameObject newButtonObject = Instantiate(buttonPrefab, contentParent);
             Text textComponent = newButtonObject.GetComponentInChildren<Text>();
             textComponent.text = card.CardName;
-
             Button button = newButtonObject.GetComponent<Button>();
             if (balance >= 100)
             {
@@ -79,7 +79,6 @@ public class CardDisplayManager : MonoBehaviour
             GameObject newButtonObject = Instantiate(buttonPrefab, contentParent);
             Text textComponent = newButtonObject.GetComponentInChildren<Text>();
             textComponent.text = card.CardName;
-
             Button button = newButtonObject.GetComponent<Button>();
             if (balance >= 100)
             {
