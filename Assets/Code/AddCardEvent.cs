@@ -1,25 +1,17 @@
 using UnityEngine;
-using Mono.Data.Sqlite;
 
 public class AddCardEvent : MonoBehaviour
 {
     void Start()
     {
-        LoadAllCards();
+        LoadAllPlayerCards();
     }
 
-    private void LoadAllCards()
-    {
-        var connectionString = "URI=file:" + Application.dataPath + "/Cards.db";
-        Debug.Log("Connecting to database...");
-        
-        using var connection = new SqliteConnection(connectionString);
-        connection.Open();
-        
-        CardManager m = gameObject.AddComponent(typeof(CardManager)) as CardManager;
-        m.PrintAllPlayerCards(1);  // Виклик методу для виведення всіх карток
+    public void LoadAllPlayerCards()
+    { 
+        CardManager cardManager = gameObject.AddComponent<CardManager>();
+        cardManager.PrintAllPlayerCards();
 
-        Debug.Log("All cards have been loaded.");
-        connection.Close();
+        Debug.Log("All player cards have been loaded.");
     }
 }

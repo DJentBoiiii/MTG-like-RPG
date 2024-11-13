@@ -1,0 +1,73 @@
+{
+  "Cards": [
+    {
+      "CardName": "Fireball",
+      "HP": 0,
+      "Power": 50,
+      "ManaPrice": 5,
+      "ImageUrl": "http://example.com/fireball.png"
+    },
+    {
+      "CardName": "Water Elemental",
+      "HP": 30,
+      "Power": 20,
+      "ManaPrice": 3,
+      "ImageUrl": "http://example.com/water_elemental.png"
+    },
+    {
+      "CardName": "Earth Golem",
+      "HP": 60,
+      "Power": 15,
+      "ManaPrice": 7,
+      "ImageUrl": "http://example.com/earth_golem.png"
+    }
+  ],
+  "PlayerInventory": [
+    {
+      "Card": {
+        "CardName": "Earth Golem",
+        "HP": 60,
+        "Power": 15,
+        "ManaPrice": 7,
+        "ImageUrl": "http://example.com/earth_golem.png"
+      },
+      "Price": 15,
+      "Amount": 3
+    },
+    {
+      "Card": {
+        "CardName": "Fireball",
+        "HP": 0,
+        "Power": 50,
+        "ManaPrice": 5,
+        "ImageUrl": "http://example.com/fireball.png"
+      },
+      "Quantity": 2
+    },
+    {
+      "Card": {
+        "CardName": "Water Elemental",
+        "HP": 30,
+        "Power": 20,
+        "ManaPrice": 3,
+        "ImageUrl": "http://example.com/water_elemental.png"
+      },
+      "Quantity": 1
+    }
+  ],
+  "ShopInventory": [
+    
+    {
+      "Card": {
+        "CardName": "Fireball",
+        "HP": 0,
+        "Power": 50,
+        "ManaPrice": 5,
+        "ImageUrl": "http://example.com/fireball.png"
+      },
+      "Price": 10,
+      "Amount": 5
+    }
+  ]
+}
+
