@@ -9,7 +9,7 @@ public class CardManager : MonoBehaviour
 
     void Awake()
     {
-        dataPath = "Assets\\StreamingAssets\\GameDictionary.json";
+        dataPath = "My project_Data\\StreamingAssets\\GameDictionary.json";
         LoadGameData();
         Debug.Log("Data loaded successfully");
     }

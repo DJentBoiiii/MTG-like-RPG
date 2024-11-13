@@ -21,7 +21,7 @@ public class CardDisplayManager : MonoBehaviour
         searchInput.onValueChanged.AddListener(delegate { FilterCards(); });
         sortDropdown.onValueChanged.AddListener(delegate { SortCards(); });
 
-        dataPath = Path.Combine("Assets\\StreamingAssets\\GameDictionary.json");
+        dataPath = Path.Combine("My project_Data\\StreamingAssets\\GameDictionary.json");
         LoadGameData();
         DisplayCards();
     }
