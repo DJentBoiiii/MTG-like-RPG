@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using Mono.Data.Sqlite;
 using System.IO;
 using System;
 
@@ -13,26 +12,46 @@ public class CardDisplayManager : MonoBehaviour
     public InputField searchInput; // Поле вводу для запиту
     public Dropdown sortDropdown; // Dropdown для вибору сортування
     int balance = 200;
+    private string dataPath;
+    private GameData gameData;
 
     void Start()
     {
         contentParent = GameObject.Find("ButtonContent").transform; // Впевніться, що об'єкт "Content" існує в ієрархії
         searchInput.onValueChanged.AddListener(delegate { FilterCards(); });
         sortDropdown.onValueChanged.AddListener(delegate { SortCards(); });
+
+        dataPath = Path.Combine("Assets\\StreamingAssets\\GameDictionary.json");
+        LoadGameData();
         DisplayCards();
+    }
+
+    private void LoadGameData()
+    {
+        if (File.Exists(dataPath))
+        {
+            string json = File.ReadAllText(dataPath);
+            gameData = JsonUtility.FromJson<GameData>(json);
+            cards = gameData.Cards;
+        }
+        else
+        {
+            gameData = new GameData();
+            cards = new List<Card>();
+        }
+    }
+
+    private void SaveGameData()
+    {
+        gameData.Cards = cards;
+        string json = JsonUtility.ToJson(gameData, true);
+        File.WriteAllText(dataPath, json);
     }
 
     void DisplayCards()
     {
         ClearExistingButtons();
-        string dbPath = Path.Combine(Application.streamingAssetsPath, "Cards.db");
-        Debug.Log("Trying to connect to database at " + dbPath);
-        using var connection = new SqliteConnection("URI=file:" + dbPath);
-        connection.Open();
-        CardManager m = gameObject.AddComponent(typeof(CardManager)) as CardManager;
-        cards = m.GetAllPlayerCards();
-        Debug.Log("Loaded cards from database");
-        connection.Close();
+        Debug.Log("Loaded cards from JSON");
         foreach (Card card in cards)
         {
             GameObject newButtonObject = Instantiate(buttonPrefab, contentParent);
