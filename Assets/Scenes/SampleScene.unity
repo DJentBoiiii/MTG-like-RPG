@@ -151,7 +151,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6805301}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -8541}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -277,7 +277,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.508
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -329,11 +329,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6fa9b355d2bd24ea41ed4d5857a2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 6805302}
   audioSource: {fileID: 6805306}
-  messageText: {fileID: 1056601348}
-  maxDistance: 65
-  minDistance: 1
+  player: {fileID: 1377767257}
+  maxDistance: 5
+  minVolume: 0
+  maxVolume: 1
 --- !u!1 &140490517
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,6 +816,7 @@ GameObject:
   - component: {fileID: 884230022}
   - component: {fileID: 884230021}
   - component: {fileID: 884230020}
+  - component: {fileID: 884230024}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -909,6 +910,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &884230024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884230019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa6fa9b355d2bd24ea41ed4d5857a2bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 6805306}
+  player: {fileID: 1377767257}
+  maxDistance: 10
+  minVolume: 0.2
+  maxVolume: 1
 --- !u!1 &1056601346
 GameObject:
   m_ObjectHideFlags: 0

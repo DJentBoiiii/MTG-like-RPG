@@ -1,61 +1,41 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 
-public class ProximitySoundController : MonoBehaviour
+public class AudioProximityController : MonoBehaviour
 {
-    public Transform target; // Посилання на цільовий об'єкт, що наближається
-    public AudioSource audioSource; // Посилання на AudioSource
-    public Text messageText; // Посилання на текстовий компонент для відображення повідомлення
-    public float maxDistance = 20f; // Максимальна відстань до об'єкта, на якій звук буде максимально гучний
-    public float minDistance = 2f; // Мінімальна відстань до об'єкта, на якій звук починає відтворюватися
+    public AudioSource audioSource; // Посилання на джерело звуку
+    public Transform player; // Посилання на гравця
+    public float maxDistance = 10f; // Максимальна відстань, на якій звук чутно
+    public float minVolume = 0.2f; // Мінімальна гучність
+    public float maxVolume = 1.0f; // Максимальна гучність
 
-    private bool isPlaying = false;
-
-    void Update()
+    private void Start()
     {
-        // Визначаємо відстань між цільовим об'єктом та нашим об'єктом
-        float distance = Vector3.Distance(target.position, transform.position);
-
-        // Якщо цільовий об'єкт у межах чутності, регулюємо гучність звуку
-        if (distance <= maxDistance)
+        if (audioSource == null || player == null)
         {
-            float volume = Mathf.Clamp01((maxDistance - distance) / (maxDistance - minDistance));
-            audioSource.volume = volume;
-
-            // Якщо звук ще не відтворюється, починаємо відтворення
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-                isPlaying = true;
-            }
-        }
-        else
-        {
-            // Якщо цільовий об'єкт вийшов за межі, поступово зменшуємо гучність до 0
-            if (audioSource.volume > 0)
-            {
-                audioSource.volume = Mathf.Max(audioSource.volume - Time.deltaTime, 0);
-            }
-            else if (audioSource.isPlaying)
-            {
-                audioSource.Stop();
-                isPlaying = false;
-            }
+            Debug.LogError("Будь ласка, призначте аудіоджерело та гравця в інспекторі.");
+            return;
         }
 
-        // Якщо звук завершив відтворення, відображаємо повідомлення
-        if (!audioSource.isPlaying && isPlaying)
+        // Увімкнути відтворення аудіо, якщо воно ще не грає
+        if (!audioSource.isPlaying)
         {
-            StartCoroutine(DisplayMessage());
-            isPlaying = false;
+            audioSource.Play();
         }
     }
 
-    IEnumerator DisplayMessage()
+    private void Update()
     {
-        messageText.text = "Щось ми збились, хлопи. Давайте відпочинемо";
-        yield return new WaitForSeconds(3);
-        messageText.text = "";
+        if (audioSource == null || player == null)
+            return;
+
+        // Обчислити відстань між гравцем і джерелом звуку
+        float distance = Vector3.Distance(player.position, transform.position);
+
+        // Обчислити нову гучність
+        float volume = Mathf.Lerp(maxVolume, minVolume, distance / maxDistance);
+        volume = Mathf.Clamp(volume, minVolume, maxVolume);
+
+        // Застосувати гучність до аудіоджерела
+        audioSource.volume = volume;
     }
 }
