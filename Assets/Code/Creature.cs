@@ -4,12 +4,10 @@ public class Creature : MonoBehaviour
 {
     public int maxHP = 100;
     public int hp;
-    public int mana;
-    public int attack;
 
     private void Start()
     {
-        hp = maxHP; 
+        hp = maxHP; // Ініціалізація HP на початку
     }
 
     public void TakeDamage(int damage)
@@ -19,11 +17,10 @@ public class Creature : MonoBehaviour
         {
             hp = 0;
         }
-        Debug.Log("Player HP: " + hp);
     }
 
     public float GetHealthPercentage()
     {
-        return (float)hp / maxHP;
+        return (float)hp / maxHP; // Повертаємо відсоток здоров'я
     }
 }
