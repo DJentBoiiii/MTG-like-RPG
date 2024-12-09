@@ -10,18 +10,20 @@ public class HealthUI : MonoBehaviour
     public Image playerHealthBar;   // Шкала здоров'я гравця
     public Image enemyHealthBar;    // Шкала здоров'я ворога
     public Button attackButton;     // Кнопка атаки
+    public Button magicButton;      // Кнопка магії
     public int damageAmount = 10;   // Урон, що наносить кожна атака
+    public int magicDamageAmount = 15; // Урон, що наносить магія
+    public Animator thirdObjectAnimator; // Аніматор третього об'єкта
+    public Transform thirdObject;   // Трансформ третього об'єкта (наприклад, в повітрі)
     public Animator playerAnimator; // Аніматор гравця
     public Animator enemyAnimator;  // Аніматор ворога
-    public Transform playerCharacter; // Трансформ гравця
-    public Transform enemyCharacter;  // Трансформ ворога
 
     private void Start()
     {
         // Перевірка наявності всіх необхідних посилань
         if (player == null || enemy == null || playerHealthBar == null || enemyHealthBar == null ||
-            attackButton == null || playerAnimator == null || enemyAnimator == null ||
-            playerCharacter == null || enemyCharacter == null)
+            attackButton == null || magicButton == null || playerAnimator == null || enemyAnimator == null ||
+            thirdObjectAnimator == null || thirdObject == null)
         {
             Debug.LogError("Не всі посилання встановлені у HealthUI!");
             return;
@@ -30,8 +32,9 @@ public class HealthUI : MonoBehaviour
         // Ініціалізація шкал здоров'я
         UpdateHealthBars();
 
-        // Прив'язка методу атаки до кнопки
+        // Прив'язка методів до кнопок
         attackButton.onClick.AddListener(OnAttackButtonClicked);
+        magicButton.onClick.AddListener(OnMagicButtonClicked);
     }
 
     private void OnAttackButtonClicked()
@@ -40,45 +43,51 @@ public class HealthUI : MonoBehaviour
         StartCoroutine(BattleSequence());
     }
 
+    private void OnMagicButtonClicked()
+    {
+        // Почати магічну атаку
+        StartCoroutine(MagicEffectSequence());
+    }
+
     private IEnumerator BattleSequence()
     {
         // Гравець атакує
-        yield return StartCoroutine(Attack(playerCharacter, enemyCharacter, playerAnimator, enemy));
+        yield return StartCoroutine(Attack(player, enemy));
         if (CheckBattleEnd()) yield break;
 
         // Ворог атакує
-        yield return StartCoroutine(Attack(enemyCharacter, playerCharacter, enemyAnimator, player));
+        yield return StartCoroutine(Attack(enemy, player));
         CheckBattleEnd();
     }
 
-    private IEnumerator Attack(Transform attacker, Transform target, Animator attackerAnimator, Creature targetCreature)
+    private IEnumerator MagicEffectSequence()
     {
-        // Переміщення атакуючого персонажа вперед
-        float moveDistance = 1f; // Відстань, на яку переміщується персонаж
-        float moveSpeed = 2f;    // Швидкість переміщення
-        Vector3 targetPosition = attacker.position + attacker.forward * moveDistance;
+     // Запуск анімації на третьому об'єкті
+    thirdObjectAnimator.SetTrigger("MagicEffect");
+    yield return new WaitForSeconds(1f); // Зачекати для завершення анімації
 
-        while (Vector3.Distance(attacker.position, targetPosition) > 0.05f)
-        {
-            attacker.position = Vector3.MoveTowards(attacker.position, targetPosition, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
+    // Нанесення шкоди ворогу
+    enemy.TakeDamage(magicDamageAmount);
+    UpdateHealthBars();
 
+    // Перевірка, чи закінчилася битва
+    if (CheckBattleEnd()) yield break;
+
+    // Ворог атакує
+    yield return StartCoroutine(Attack(enemy, player));
+    CheckBattleEnd();
+    }
+
+    private IEnumerator Attack(Creature attacker, Creature target)
+    {
         // Запуск анімації атаки
+        Animator attackerAnimator = (attacker == player) ? playerAnimator : enemyAnimator;
         attackerAnimator.SetTrigger("Attack");
         yield return new WaitForSeconds(0.5f); // Час для завершення анімації
 
         // Нанесення шкоди
-        targetCreature.TakeDamage(damageAmount);
+        target.TakeDamage(damageAmount);
         UpdateHealthBars();
-
-        // Повернення атакуючого на початкову позицію
-        Vector3 initialPosition = attacker.position - attacker.forward * moveDistance;
-        while (Vector3.Distance(attacker.position, initialPosition) > 0.05f)
-        {
-            attacker.position = Vector3.MoveTowards(attacker.position, initialPosition, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
     }
 
     private void UpdateHealthBars()

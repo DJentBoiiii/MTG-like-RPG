@@ -924,9 +924,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
   player: {fileID: 1377767257}
-  maxDistance: 10
-  minVolume: 0.2
-  maxVolume: 1
+  maxDistance: 5
+  minVolume: 0
+  maxVolume: 0.7
 --- !u!1 &1056601346
 GameObject:
   m_ObjectHideFlags: 0
