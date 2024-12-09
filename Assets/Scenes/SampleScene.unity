@@ -134,8 +134,8 @@ GameObject:
   - component: {fileID: 6805305}
   - component: {fileID: 6805304}
   - component: {fileID: 6805303}
-  - component: {fileID: 6805306}
   - component: {fileID: 6805307}
+  - component: {fileID: 6805308}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -221,7 +221,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6805301}
   m_CullTransparentMesh: 1
---- !u!82 &6805306
+--- !u!114 &6805307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6805301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa6fa9b355d2bd24ea41ed4d5857a2bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 6805308}
+  player: {fileID: 1377767257}
+  maxDistance: 15
+  minVolume: 0
+  maxVolume: 1
+--- !u!82 &6805308
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,9 +259,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 65
+  MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 1
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -317,23 +334,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6805307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6805301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa6fa9b355d2bd24ea41ed4d5857a2bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 6805306}
-  player: {fileID: 1377767257}
-  maxDistance: 5
-  minVolume: 0
-  maxVolume: 1
 --- !u!1 &140490517
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,7 +922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6fa9b355d2bd24ea41ed4d5857a2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 6805306}
+  audioSource: {fileID: 0}
   player: {fileID: 1377767257}
   maxDistance: 10
   minVolume: 0.2
@@ -1498,6 +1498,7 @@ GameObject:
   - component: {fileID: 1377767259}
   - component: {fileID: 1377767260}
   - component: {fileID: 1377767261}
+  - component: {fileID: 1377767262}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1679,6 +1680,14 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.77, y: 1.38}
   m_EdgeRadius: 0
+--- !u!81 &1377767262
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377767254}
+  m_Enabled: 1
 --- !u!1 &1447579751
 GameObject:
   m_ObjectHideFlags: 0
